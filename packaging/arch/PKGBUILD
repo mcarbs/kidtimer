@@ -1,11 +1,12 @@
 _pkgname=kidtimer
 pkgname=$_pkgname-git
-pkgver=1.0.gdbcfaa7
+pkgver=79d49d3b7899a8ffb8bd4cbeb9da0d75c98bf8cf
 pkgrel=1
 pkgdesc="Shell script that limits kids time on the computer"
 arch=('any')
 url="https://github.com/mcarbs/kidtimer"
 license=('GPL')
+depends=('cron')
 makedepends=('git')
 provides=("$_pkgname")
 conflicts=("$_pkgname")
@@ -14,10 +15,11 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "$_pkgname"
-  git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+  git rev-parse HEAD
 }
 
 package() {
   cd "$_pkgname/src"
-  install -Dm755 * "$pkgdir/"
+  install -Dm644 etc/cron.d/kidtimer "$pkgdir/etc/cron.d/kidtimer"
+  
 }
